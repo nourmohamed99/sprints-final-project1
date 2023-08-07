@@ -13,7 +13,7 @@ pipeline {
             steps {
                 // Your Docker build steps here using the Dockerfile
                 sh 'docker build -t sprints-project .'
-                sh "docker tag sprints-project $ECR_REPOSITORY:$BUILD_NUMBER
+                sh "docker tag sprints-project $ECR_REPOSITORY:$BUILD_NUMBER"
             }
         }
 
