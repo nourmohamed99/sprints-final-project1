@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: sprints
-          image: nourmohamed99/sprints-project:latest
+          image: <SPRINTS-IMAGE>
           env:
             - name: DB_HOST
               valueFrom:
