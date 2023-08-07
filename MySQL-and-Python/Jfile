@@ -15,6 +15,7 @@ pipeline {
                 sh 'docker build -t nourmohamed99/sprints-project:latest MySQL-and-Python/.'
             }
         }
+}
     stage('Push to Docker Hub') {
             steps {
                 withDockerRegistry(credentialsId: 'docker-hub', url: 'https://index.docker.io/v1/') {
