@@ -12,18 +12,18 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Your Docker build steps here using the Dockerfile
-                sh 'docker build -t nourmohamed99/sprints-project:latest MySQL-and-Python/.'
+                sh 'docker build -t /MySQL-and-Python/nourmohamed99/sprints-project:latest .'
             }
         }
 
-         stage('Push to Docker Hub') {
+        stage('Push to Docker Hub') {
             steps {
-                withDockerRegistry(credentialsId: 'docker-hub') {
+                withDockerRegistry(credentialsId: 'DockerHub-Cred', url: 'https://index.docker.io/v1/') {
                     sh 'docker push nourmohamed99/sprints-project:latest'
                 }
             }
         }
-     
-    }
 
+       
+    }
 }
