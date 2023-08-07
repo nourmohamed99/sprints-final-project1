@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  serviceName: mysql-service    
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      # initContainers:
+      # - name: init-sql
+      #   image: mysql:latest
+      #   command: ['sh', '-c', 'mysql -h mysql-service -u root -p$MYSQL_ROOT_PASSWORD < /home/hp/Documents/MySQL-and-Python/MySQL_Queries/BucketList.sql']
+      #   env:
+      #   - name: MYSQL_ROOT_PASSWORD
+      #     valueFrom:
+      #       secretKeyRef:
+      #         name: mysql-secret
+      #         key: DB_PASSWORD
+      #   volumeMounts:
+      #   - name: sql-file
+      #     mountPath: /docker-entrypoint-initdb.d
+      containers:
+        - name: mysql-container
+          image: mysql:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: DB_PASSWORD
+            - name: MYSQL_DATABASE_NAME
+              value: BucketList      
+            # - name: MYSQL_HOST
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: mysql-configmap
+            #       key: DB_HOST
+            # - name: MYSQL_USER
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: mysql-configmap
+            #       key: DB_USER
+            - name: MYSQL_PORT
+              value: "3306"                     
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-queries
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-queries
+          configMap:
+            name: mysql-queries-configmap
+        
+
+      
