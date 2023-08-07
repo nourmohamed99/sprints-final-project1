@@ -3,7 +3,7 @@ pipeline {
 
         environment {
         AWS_DEFAULT_REGION = 'us-east-1'
-        ECR_REPOSITORY = 'ecr-repo'
+        ECR_REPOSITORY = '847428049754.dkr.ecr.us-east-1.amazonaws.com/sprints'
         IMAGE_TAG = 'latest'
         //AWS_ACCOUNT_ID = sh(returnStdout: true, script: 'aws sts get-caller-identity --query "Account" --output text').trim()
     }
@@ -12,7 +12,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Your Docker build steps here using the Dockerfile
-                sh 'docker build -t nourmohamed99/sprints-project:latest MySQL-and-Python/.'
+                sh 'docker build -t sprints-project .'
+                sh "docker tag sprints-project $ECR_REPOSITORY:latest
             }
         }
 
@@ -21,8 +22,9 @@ pipeline {
                script {
                     withCredentials([usernamePassword(credentialsId: 'aws-sprints', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')])
                  {
-                    
-                        sh 'docker push nourmohamed99/sprints-project:latest'
+                        sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REPOSITORY"
+                        sh 'docker push $ECR_REPOSITORY:latest'
+                        
                  }
                }
              }
