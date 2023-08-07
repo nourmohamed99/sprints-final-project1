@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t sprints-project /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/Dockerfile'
+                sh 'docker build -t sprints-project /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/ .'
                 sh "docker tag sprints-project $ECR_REPOSITORY:$BUILD_NUMBER"
             }
         }
