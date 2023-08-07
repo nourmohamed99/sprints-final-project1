@@ -16,14 +16,17 @@ pipeline {
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Push to ecr) {
             steps {
-                withDockerRegistry(credentialsId: 'docker-hub', url: 'https://index.docker.io/v1/') {
-                    sh 'docker push nourmohamed99/sprints-project:latest'
-                }
-            }
-        }
+               script {
+                    withCredentials([usernamePassword(credentialsId: 'aws-sprints', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')])
+                 {
+                    
+                        sh 'docker push nourmohamed99/sprints-project:latest'
+                 }
+               }
+             }
 
        
-    }
-}
+           }
+        }
