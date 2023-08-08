@@ -38,6 +38,7 @@ pipeline {
                             echo "ConfigMap 'mysql-queries-configmap' created successfully."
                         } else {
                             error "Failed to create ConfigMap 'mysql-queries-configmap'."
+                            sh "kubectl create configmap mysql-queries-configmap --from-file=/var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/MySQL_Queries/BucketList.sql"
                         }
                         
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-configmap.yml"
