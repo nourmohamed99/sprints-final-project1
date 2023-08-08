@@ -70,13 +70,31 @@ In your GitHub repository, go to Settings > Webhooks > Add webhook.
 3. add access to everything
 
 
+
 ## Step 6: Configure Jenkins Pipeline
 
-1.Create a Multibranch Pipeline in Jenkins
-2. add github-url and credentials and jenkins file path. and make sure that the discover all brances strategy is set to all branches and all branches have the same properties.also the jenkinspath will be MySQL-and-Python/Jenkinsfile
+1. Create a Multibranch Pipeline in Jenkins
+2. add github-url and credentials and jenkins file path. and make sure that the discover all brances strategy is set to all branches and all branches have the same properties. also the jenkinspath will be MySQL-and-Python/Jenkinsfile
+
+
+## EXTRA CHECK:
+1. check if this path is working and found on the ec2 machine
+```shell
+cd /var/lib/jenkins/workspace/project_master/MySQL-and-Python
+```
+3. if this path is available go to step 7.
+4. if this path is not available run 
+```shell
+cd /var/lib/jenkins/workspace/
+```
+```shell
+ls
+```
+5. you will see 3 file. see the name of the first file on the left (not the workspace or the filename@tmp) and change it the path in jenkins file according to the folder name that you see.
+HINT: inside the folder that you are looking for is the MySQL-and-Python folder  
+
 
 ## Step 7: Configure Jenkins Pipeline
-
 1.in the ec2 terminal run 
 ```shell
 sudo chmod 666 /var/run/docker.sock
@@ -114,8 +132,7 @@ after running kubectl get all copy the EXTERNAL-IP of the my-app-service service
 
 ![app1](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/c1173680-dc14-4a17-a2ab-18c49ad5c640)
 
-
-   ![app2](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/dd9c36be-7423-49d7-acc9-0cd5cc5b93de)
+![app2](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/dd9c36be-7423-49d7-acc9-0cd5cc5b93de)
 
 ![app3](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/1924d13d-edbb-49ed-9579-8c09bfa6d139)
 ![signin1](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/01572bdc-2a4f-4451-8e2a-1d06721e7412)
