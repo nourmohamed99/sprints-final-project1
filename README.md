@@ -28,6 +28,7 @@ terraform apply -input=false -auto-approve
 1. Run Ansible-playbook to install Docker, AWS CLI, Kubernetes tools, and Jenkins.
    change the inventory files in terraform and ansible folder with the ip of your instance.
    make sure to run this command inside the ansible folder.
+   IMPORTANT: check the public-ip is correct in ansible/inventory.txt
    
 ```shell
 ansible-playbook docker.yml -i inventory.txt
