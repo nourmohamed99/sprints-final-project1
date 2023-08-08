@@ -32,7 +32,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'aws-sprints', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh "aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster"
                         sh "sed -i 's|<SPRINTS-IMAGE>|$ECR_REPOSITORY:$BUILD_NUMBER|g' /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
-                        def configMapOutput = sh(returnStdout: true, script: "kubectl get configmap mysql-queries-configmap")
+                        def configMapOutput = sh(returnStdout: true, script: "kubectl get configmap")
                         
                         if (configMapOutput.contains("mysql-queries-configmap")) {
                             echo "ConfigMap 'mysql-queries-configmap' created successfully."
