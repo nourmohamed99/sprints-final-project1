@@ -39,8 +39,8 @@ pipeline {
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/service.yml"
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/ingress.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pv"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pvc"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pv.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pvc.yml"
                     }
                 }
             }
