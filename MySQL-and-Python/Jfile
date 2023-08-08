@@ -35,7 +35,7 @@ pipeline {
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-configmap.yml"
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-secret.yml"
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/statefulset.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-service-yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-service.yml"
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/service.yml"
                         sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/ingress.yml"
