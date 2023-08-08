@@ -1,10 +1,56 @@
 pipeline {
     agent any
 
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-1'
+        ECR_REPOSITORY = '847428049754.dkr.ecr.us-east-1.amazonaws.com/sprints'
+        IMAGE_TAG = 'latest'
+    }
+    
     stages {
-        stage('Hello') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Hello World'
+                sh 'docker build -t sprints-project /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/'
+                sh "docker tag sprints-project $ECR_REPOSITORY:$BUILD_NUMBER"
+            }
+        }
+
+        stage('Push to ECR') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'aws-sprints', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REPOSITORY"
+                        sh "docker push $ECR_REPOSITORY:$BUILD_NUMBER"
+                    }
+                }
+            }
+        }
+        
+        stage('Deployment Stage') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'aws-sprints', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh "aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster"
+                        sh "sed -i 's|<SPRINTS-IMAGE>|$ECR_REPOSITORY:$BUILD_NUMBER|g' /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
+                        def configMapOutput = sh(returnStdout: true, script: "kubectl get configmap mysql-queries-configmap")
+                        
+                        if (configMapOutput.contains("mysql-queries-configmap")) {
+                            echo "ConfigMap 'mysql-queries-configmap' created successfully."
+                        } else {
+                            error "Failed to create ConfigMap 'mysql-queries-configmap'."
+                        }
+                        
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-configmap.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-secret.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/statefulset.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-service.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/service.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/ingress.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pv.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pvc.yml"
+                    }
+                }
             }
         }
     }
