@@ -18,7 +18,7 @@ terraform init
 ```shell
 terraform plan -input=false
 ```
-3. Apply the infrastructure changes:
+3. Apply the infrastructure:
    
 ```shell
 terraform apply -input=false -auto-approve
