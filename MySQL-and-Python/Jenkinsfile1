@@ -38,7 +38,6 @@ pipeline {
                         } catch (Exception e) {
                             echo "ConfigMap 'mysql-queries-configmap' already exists: ${e.getMessage()}"
                         }
-                    }
                         
                     sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-configmap.yml"
                     sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-secret.yml"
@@ -49,6 +48,7 @@ pipeline {
                     sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/ingress.yml"
                     sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pv.yml"
                     sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pvc.yml"
+                    }
                 }
             }
         }
