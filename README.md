@@ -90,8 +90,8 @@ cd /var/lib/jenkins/workspace/
 ```shell
 ls
 ```
-5. you will see 3 file. see the name of the first file on the left (not the workspace or the filename@tmp) and change it the path in jenkins file according to the folder name that you see.
-HINT: inside the folder that you are looking for is the MySQL-and-Python folder  
+5. you will see 3 file. see the name of the first file on the left (not the workspace or the filename@tmp) and change all the paths in jenkins file according to the folder name that you see.(replace paths in Jenkinsfile)
+HINT: inside the folder that you are looking for is the MySQL-and-Python folder   
 
 
 ## Step 7: Configure Jenkins Pipeline
