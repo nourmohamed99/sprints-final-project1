@@ -33,7 +33,15 @@ pipeline {
                         sh "aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster"
                         sh "sed -i 's|<SPRINTS-IMAGE>|$ECR_REPOSITORY:$BUILD_NUMBER|g' /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
                         sh "kubectl create configmap mysql-queries-configmap --from-file=/var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/MySQL_Queries/BucketList.sql"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-configmap.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-secret.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/statefulset.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-service-yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/service.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/ingress.yml"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pv"
+                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pvc"
                     }
                 }
             }
