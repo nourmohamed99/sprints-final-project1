@@ -111,9 +111,12 @@ after running kubectl get all copy the EXTERNAL-IP of the my-app-service service
 ## output 
 ![pipeline](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/b06b2727-3e15-4e66-aa90-f2bba1343f11)
 
-![signin](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/6525f96c-ba3c-4985-aacf-90ee8343036e)
-![signup](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/d3f81da4-30f2-4f7e-ac45-a9d9d3ceec0c)
+
+![app1](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/c1173680-dc14-4a17-a2ab-18c49ad5c640)
 
 
+   ![app2](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/dd9c36be-7423-49d7-acc9-0cd5cc5b93de)
 
-   
+![app3](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/1924d13d-edbb-49ed-9579-8c09bfa6d139)
+![signin1](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/01572bdc-2a4f-4451-8e2a-1d06721e7412)
+![app4](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/0603ff00-6d94-430a-b05c-0db7d279a721)
