@@ -32,25 +32,23 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'aws-sprints', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh "aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster"
                         sh "sed -i 's|<SPRINTS-IMAGE>|$ECR_REPOSITORY:$BUILD_NUMBER|g' /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
-                        def configMapOutput = sh(returnStdout: false, script: "kubectl get configmap mysql-queries-configmap")
-                        
-                        if (configMapOutput.contains("mysql-queries-configmap")) {
-                            echo "ConfigMap 'mysql-queries-configmap' created successfully."
-                        } else {
-                            error "Failed to create ConfigMap 'mysql-queries-configmap'."
+                        try {
                             sh "kubectl create configmap mysql-queries-configmap --from-file=/var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/MySQL_Queries/BucketList.sql"
+                            echo "ConfigMap 'mysql-queries-configmap' created successfully."
+                        } catch (Exception e) {
+                            echo "ConfigMap 'mysql-queries-configmap' already exists: ${e.getMessage()}"
                         }
-                        
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-configmap.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-secret.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/statefulset.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-service.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/service.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/ingress.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pv.yml"
-                        sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pvc.yml"
                     }
+                        
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-configmap.yml"
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-secret.yml"
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/statefulset.yml"
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-service.yml"
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/deployment.yml"
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/service.yml"
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/ingress.yml"
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pv.yml"
+                    sh "kubectl apply -f /var/lib/jenkins/workspace/sprints-project/MySQL-and-Python/mysql-pvc.yml"
                 }
             }
         }
