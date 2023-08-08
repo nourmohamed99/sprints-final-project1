@@ -51,13 +51,14 @@ ansible-playbook jenkins.yml -i inventory.txt
 ```shell
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
-3.Install suggested plugins then create a Jenkins  account:
+3.Install suggested plugins then create a Jenkins  account.
 
 
 ## Step 4: Add Credentials:
 
 1. To create jenkins credentials we acess Jenkins > manage Jenkins > credentials > system > global credentials 
    add aws credentials and github credentials (using git hub token)
+   make sure to name id with: (aws-sprints) as i am using that name in jenkins file
 
 
 ## Step 5: Add GitHub Webhook:
@@ -72,11 +73,47 @@ In your GitHub repository, go to Settings > Webhooks > Add webhook.
 ## Step 6: Configure Jenkins Pipeline
 
 1.Create a Multibranch Pipeline in Jenkins
-2. add github-url and credentials and jenkins file path.
+2. add github-url and credentials and jenkins file path. and make sure that the discover all brances strategy is set to all branches and all branches have the same properties.also the jenkinspath will be MySQL-and-Python/Jenkinsfile
 
+## Step 7: Configure Jenkins Pipeline
 
-## Step 7: Run the Pipeline
+1.in the ec2 terminal run 
+```shell
+sudo chmod 666 /var/run/docker.sock
+```
+2. then restart docker
+```shell
+sudo systemctl restart docker
+```
+3. run and add aws credentials to ec2-machine add key-id and access-key
+```shell
+aws configure
+```
+4. run
+```shell
+aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
+```
+
+## Step 8: Run the Pipeline
 Commit and push changes to your GitHub repository.
 Jenkins will automatically trigger the pipeline on new commits and perform the defined actions.
+
+
+## step 9: make sure pods are running
+```shell
+kubectl get all
+```
+![kubectlgetall](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/b74d253f-e046-4789-a2fe-759c822d86ce)
+
+## step 10: check website running
+after running kubectl get all copy the EXTERNAL-IP of the my-app-service service and put it in the web browser it should open the website.
+
+## output 
+![pipeline](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/b06b2727-3e15-4e66-aa90-f2bba1343f11)
+
+![signin](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/6525f96c-ba3c-4985-aacf-90ee8343036e)
+![signup](https://github.com/nourmohamed99/sprints-final-project1/assets/88977873/d3f81da4-30f2-4f7e-ac45-a9d9d3ceec0c)
+
+
 
    
